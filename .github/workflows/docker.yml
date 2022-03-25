@@ -17,4 +17,4 @@ jobs:
       - name: Build Docker image
         run: |
           ls -l /etc/localtime
-          ls -l /usr/share/zoneinfo
+          ls -l /usr/share/zoneinfo/Asia
