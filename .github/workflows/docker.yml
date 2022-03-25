@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build Docker
         run: |
+          docker -v
           cd amd64
           ls -l
           docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg ARG_APT_NO_RECOMMENDS=1 -t my:v1 .
