@@ -16,5 +16,6 @@ jobs:
       - name: Build Docker
         run: |
           cd amd64
+          ls -l
           docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg ARG_APT_NO_RECOMMENDS=1 -t my:v1 .
           docker images
