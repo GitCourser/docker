@@ -213,7 +213,7 @@ COPY ./xfce/src/home/config "${HOME}"/.config/
 COPY ./xfce/src/home/Desktop "${HOME}"/Desktop/
 COPY ./xfce/src/home/readme*.md "${HOME}"/
 
-COPY /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+COPY /etc/localtime /etc/localtime
 
 ### Create the default application user (non-root, but member of the group zero)
 ### and allow the group zero to modify '/etc/passwd' and '/etc/group'.
