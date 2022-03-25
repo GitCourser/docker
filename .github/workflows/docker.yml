@@ -1,0 +1,20 @@
+name: Docker
+
+on:
+  workflow_dispatch:
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.repository == 'GitCourser/docker'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build Docker
+        run: |
+          cd amd64
+          docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg ARG_APT_NO_RECOMMENDS=1 -t my:v1 .
+          docker images
