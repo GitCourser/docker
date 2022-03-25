@@ -92,6 +92,7 @@ RUN \
     --mount=type=cache,target=/var/lib/apt,from=stage_cache,source=/var/lib/apt \
     DEBIAN_FRONTEND=noninteractive apt-get install -y ${ARG_APT_NO_RECOMMENDS:+--no-install-recommends} \
         mousepad \
+        fonts-wqy-microhei \
         python3 \
         systemctl
 
