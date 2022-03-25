@@ -213,8 +213,6 @@ COPY ./xfce/src/home/config "${HOME}"/.config/
 COPY ./xfce/src/home/Desktop "${HOME}"/Desktop/
 COPY ./xfce/src/home/readme*.md "${HOME}"/
 
-COPY /etc/localtime /etc/localtime
-
 ### Create the default application user (non-root, but member of the group zero)
 ### and allow the group zero to modify '/etc/passwd' and '/etc/group'.
 ### Providing the build argument ARG_SUPPORT_USER_GROUP_OVERRIDE (set to anything) allows any user
@@ -227,7 +225,8 @@ RUN \
     # && ${ARG_FEATURES_USER_GROUP_OVERRIDE/*/chmod a+w /etc/passwd /etc/group} \
     && ln -s "${HOME}"/readme.md "${HOME}"/Desktop/README \
     && chmod 755 -R "${STARTUPDIR}" \
-    && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}"
+    && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}" \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 USER 1001
 
