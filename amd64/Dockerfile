@@ -26,8 +26,7 @@ FROM ${BASEIMAGE}:${BASETAG} as stage_essentials
 
 SHELL ["/bin/bash", "-c"]
 
-RUN \
-    --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
+RUN --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
     --mount=type=cache,target=/var/lib/apt,from=stage_cache,source=/var/lib/apt \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         jq \
@@ -49,8 +48,7 @@ ENV \
     FEATURES_BUILD_SLIM_XSERVER=${ARG_APT_NO_RECOMMENDS:+1} \
     NO_AT_BRIDGE=1
 
-RUN \
-    --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
+RUN --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
     --mount=type=cache,target=/var/lib/apt,from=stage_cache,source=/var/lib/apt \
     DEBIAN_FRONTEND=noninteractive apt-get install -y ${ARG_APT_NO_RECOMMENDS:+--no-install-recommends} \
         dbus-x11 \
@@ -69,8 +67,7 @@ ARG ARG_APT_NO_RECOMMENDS
 
 ENV FEATURES_BUILD_SLIM_XFCE=${ARG_APT_NO_RECOMMENDS:+1}
 
-RUN \
-    --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
+RUN --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
     --mount=type=cache,target=/var/lib/apt,from=stage_cache,source=/var/lib/apt \
     DEBIAN_FRONTEND=noninteractive apt-get install -y ${ARG_APT_NO_RECOMMENDS:+--no-install-recommends} \
         xfce4 \
@@ -87,8 +84,7 @@ ARG ARG_APT_NO_RECOMMENDS
 ENV \
     FEATURES_BUILD_SLIM_TOOLS=${ARG_APT_NO_RECOMMENDS:+1} \
 
-RUN \
-    --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
+RUN --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
     --mount=type=cache,target=/var/lib/apt,from=stage_cache,source=/var/lib/apt \
     DEBIAN_FRONTEND=noninteractive apt-get install -y ${ARG_APT_NO_RECOMMENDS:+--no-install-recommends} \
         mousepad \
@@ -109,8 +105,7 @@ ARG ARG_VNC_RESOLUTION
 ARG ARG_VNC_VIEW_ONLY
 
 # wget -qO- https://github.com/accetto/tigervnc/releases/download/v1.12.0-mirror/tigervnc-1.12.0.x86_64.tar.gz | tar xz --strip 1 -C / \
-RUN \
-    wget -qO- https://sourceforge.net/projects/tigervnc/files/stable/1.12.0/tigervnc-1.12.0.x86_64.tar.gz | tar xz --strip 1 -C / \
+RUN wget -qO- https://sourceforge.net/projects/tigervnc/files/stable/1.12.0/tigervnc-1.12.0.x86_64.tar.gz | tar xz --strip 1 -C / \
     && ln -s /usr/libexec/vncserver /usr/bin/vncserver \
     && sed -i 's/exec(@cmd);/print "@cmd";\nexec(@cmd);/g' /usr/libexec/vncserver
 
@@ -140,8 +135,7 @@ ENV \
     NO_VNC_HOME=/usr/libexec/noVNCdim \
     NO_VNC_PORT=${ARG_NO_VNC_PORT:-6901}
 
-RUN \
-    mkdir -p "${NO_VNC_HOME}"/utils/websockify \
+RUN mkdir -p "${NO_VNC_HOME}"/utils/websockify \
     && wget -qO- https://github.com/novnc/noVNC/archive/v1.3.0.tar.gz | tar xz --strip 1 -C "${NO_VNC_HOME}" \
     && wget -qO- https://github.com/novnc/websockify/archive/v0.10.0.tar.gz | tar xz --strip 1 -C "${NO_VNC_HOME}"/utils/websockify \
     && chmod +x -v "${NO_VNC_HOME}"/utils/novnc_proxy
@@ -216,8 +210,7 @@ COPY ./xfce/src/home/readme*.md "${HOME}"/
 ### and allow the group zero to modify '/etc/passwd' and '/etc/group'.
 ### Providing the build argument ARG_SUPPORT_USER_GROUP_OVERRIDE (set to anything) allows any user
 ### to modify both files and makes user group overriding possible (like 'run --user x:y').
-RUN \
-    chmod 664 /etc/passwd /etc/group \
+RUN chmod 664 /etc/passwd /etc/group \
     && echo "${ARG_HEADLESS_USER_NAME:-headless}:x:1001:0:Default:${HOME}:/bin/bash" >> /etc/passwd \
     && adduser "${ARG_HEADLESS_USER_NAME:-headless}" sudo \
     && echo "${ARG_HEADLESS_USER_NAME:-headless}:${ARG_SUDO_PW:-${VNC_PW}}" | chpasswd \
