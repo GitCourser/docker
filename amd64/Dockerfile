@@ -85,7 +85,8 @@ FROM stage_xfce as stage_tools
 ARG ARG_APT_NO_RECOMMENDS
 
 ENV \
-    FEATURES_BUILD_SLIM_TOOLS=${ARG_APT_NO_RECOMMENDS:+1}
+    FEATURES_BUILD_SLIM_TOOLS=${ARG_APT_NO_RECOMMENDS:+1} \
+    TZ=Asia/Shanghai
 
 RUN \
     --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
@@ -96,8 +97,9 @@ RUN \
         python3 \
         systemctl \
         tzdata \
-        ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-
+        && ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime \
+        && echo ${TZ} > /etc/timezone \
+        && dpkg-reconfigure --frontend noninteractive tzdata
 
 #############
 ### stage_vnc
@@ -228,6 +230,7 @@ RUN \
     && ln -s "${HOME}"/readme.md "${HOME}"/Desktop/README \
     && chmod 755 -R "${STARTUPDIR}" \
     && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}"
+    && rm -rf /var/lib/apt/lists/*
 
 USER 1001
 
