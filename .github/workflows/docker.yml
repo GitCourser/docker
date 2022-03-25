@@ -16,5 +16,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          ls -l /etc/localtime
-          ls -l /usr/share/zoneinfo/Asia
+          cd amd64
+          DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg ARG_APT_NO_RECOMMENDS=1 -t ${{ secrets.DOCKERHUB_USERNAME }}/ubuntu:amd64 .
+
+      - name: Push to Docker Repository
+        run: |
+          docker -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/ubuntu:amd64
