@@ -94,7 +94,9 @@ RUN \
         mousepad \
         fonts-wqy-microhei \
         python3 \
-        systemctl
+        systemctl \
+        tzdata \
+        ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 
 #############
@@ -225,8 +227,7 @@ RUN \
     # && ${ARG_FEATURES_USER_GROUP_OVERRIDE/*/chmod a+w /etc/passwd /etc/group} \
     && ln -s "${HOME}"/readme.md "${HOME}"/Desktop/README \
     && chmod 755 -R "${STARTUPDIR}" \
-    && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}" \
-    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}"
 
 USER 1001
 
