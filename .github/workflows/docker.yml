@@ -13,9 +13,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Build Docker
+
+      - name: Build Docker image
         run: |
           cd amd64
-          DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg ARG_APT_NO_RECOMMENDS=1 -t my:v1 .
-          docker pull accetto/ubuntu-vnc-xfce-g3
-          docker images
+          DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg ARG_APT_NO_RECOMMENDS=1 -t dkcourser/ubuntu:amd64 .
+
+      - name: Push to Docker Repository
+        run: |
+          docker -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker push dkcourser/ubuntu:amd64
