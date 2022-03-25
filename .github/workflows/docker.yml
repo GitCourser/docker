@@ -18,6 +18,7 @@ jobs:
         run: |
           cd amd64
           DOCKER_BUILDKIT=1 docker build --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg ARG_APT_NO_RECOMMENDS=1 -t ${{ secrets.DOCKERHUB_USERNAME }}/ubuntu:amd64 .
+          docker images
 
       - name: Push to Docker Repository
         run: |
