@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Electron
+Comment=Electron APP
+Exec=/electron/electron
+Path=/electron
+Terminal=false
+StartupNotify=false
+Icon=/electron/icon.png
