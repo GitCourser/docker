@@ -186,7 +186,7 @@ WORKDIR ${HOME}
 ### stage_electron
 ##################
 
-# FROM merge_stage_vnc as stage_electron
+FROM merge_stage_vnc as stage_electron
 ARG ARG_APT_NO_RECOMMENDS
 
 ENV \
