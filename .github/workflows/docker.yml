@@ -20,4 +20,4 @@ jobs:
           passwd: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           cd arm64
-          ./build.sh
+          chmod +x build.sh && ./build.sh
