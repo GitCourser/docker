@@ -14,6 +14,8 @@ ARG ARG_FINAL_STAGE_BASE=merge_stage_browser
 
 FROM ${BASEIMAGE}:${BASETAG} as stage_cache
 
+COPY qemu-aarch64-static /user/bin
+
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
 RUN apt-get update
 
@@ -165,8 +167,8 @@ RUN echo -e \
 "        <meta charset=\"utf-8\"/>\n" \
 "    </head>\n" \
 "    <body>\n" \
-"        <p><a href=\"vnc_lite.html\">noVNC Lite Client</a></p>\n" \
-"        <p><a href=\"vnc.html\">noVNC Full Client</a></p>\n" \
+"        <p><a href=\"vnc_lite.html?password=${VNC_PW}\">noVNC Lite Client</a></p>\n" \
+"        <p><a href=\"vnc.html?password=${VNC_PW}\">noVNC Full Client</a></p>\n" \
 "    </body>\n" \
 "</html>" \
 > "${NO_VNC_HOME}"/index.html
@@ -235,7 +237,10 @@ RUN \
     && ln -s "${HOME}"/readme.md "${HOME}"/Desktop/README \
     && chmod 755 -R "${STARTUPDIR}" \
     && "${STARTUPDIR}"/set_user_permissions.sh "${STARTUPDIR}" "${HOME}" \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get autoclean -y \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/cache/apt/*
 
 USER 1001
 
