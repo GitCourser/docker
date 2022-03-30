@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:experimental
 
-ARG BASEIMAGE=ubuntu
+ARG BASEIMAGE=arm64v8/ubuntu
 ARG BASETAG=20.04
 
 ARG ARG_MERGE_STAGE_VNC_BASE=stage_novnc
@@ -23,6 +23,8 @@ RUN apt-get update
 ####################
 
 FROM ${BASEIMAGE}:${BASETAG} as stage_essentials
+
+COPY qemu-aarch64-static /user/bin
 
 SHELL ["/bin/bash", "-c"]
 
@@ -113,11 +115,13 @@ ARG ARG_VNC_PW
 ARG ARG_VNC_RESOLUTION
 ARG ARG_VNC_VIEW_ONLY
 
-# wget -qO- https://github.com/accetto/tigervnc/releases/download/v1.12.0-mirror/tigervnc-1.12.0.x86_64.tar.gz | tar xz --strip 1 -C / \
 RUN \
-    wget -qO- https://sourceforge.net/projects/tigervnc/files/stable/1.12.0/tigervnc-1.12.0.x86_64.tar.gz | tar xz --strip 1 -C / \
-    && ln -s /usr/libexec/vncserver /usr/bin/vncserver \
-    && sed -i 's/exec(@cmd);/print "@cmd";\nexec(@cmd);/g' /usr/libexec/vncserver
+    --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
+    --mount=type=cache,target=/var/lib/apt,from=stage_cache,source=/var/lib/apt \
+    wget -nd -P /var/cache/apt https://sourceforge.net/projects/tigervnc/files/stable/1.12.0/ubuntu-20.04LTS/arm64/tigervncserver_1.12.0-1ubuntu1_arm64.deb \
+    && dpkg -i /var/cache/apt/tigervncserver_1.12.0-1ubuntu1_arm64.deb \
+    && ln -s /usr/lib/aarch64-linux-gnu/tigervncserver /usr/bin/vncserver \
+    && sed -i 's/exec(@cmd);/print "@cmd";\nexec(@cmd);/g' /usr/lib/aarch64-linux-gnu/tigervncserver
 
 ENV \
     DISPLAY=${ARG_VNC_DISPLAY:-:1} \
@@ -142,7 +146,7 @@ ARG ARG_NO_VNC_PORT
 ENV \
     FEATURES_BUILD_SLIM_NOVNC=${ARG_APT_NO_RECOMMENDS:+1} \
     FEATURES_NOVNC=1 \
-    NO_VNC_HOME=/usr/libexec/noVNCdim \
+    NO_VNC_HOME=/usr/aarch64-linux-gnu/noVNCdim \
     NO_VNC_PORT=${ARG_NO_VNC_PORT:-6901}
 
 RUN \
