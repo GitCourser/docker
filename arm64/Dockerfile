@@ -118,6 +118,7 @@ ARG ARG_VNC_VIEW_ONLY
 RUN \
     --mount=type=cache,target=/var/cache/apt,from=stage_cache,source=/var/cache/apt \
     --mount=type=cache,target=/var/lib/apt,from=stage_cache,source=/var/lib/apt \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y x11-utils libfontenc1 libgl1-mesa-dri libxfont-dev libxtst6 libglu1-mesa \
     wget -nd -P /var/cache/apt https://sourceforge.net/projects/tigervnc/files/stable/1.12.0/ubuntu-20.04LTS/arm64/tigervncserver_1.12.0-1ubuntu1_arm64.deb \
     && dpkg -i /var/cache/apt/tigervncserver_1.12.0-1ubuntu1_arm64.deb \
     && ln -s /usr/lib/aarch64-linux-gnu/tigervncserver /usr/bin/vncserver \
