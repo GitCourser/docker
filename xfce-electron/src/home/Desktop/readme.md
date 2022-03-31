@@ -18,8 +18,8 @@ total 11040
 ```c
 // 必须映射的app目录, 加上你自己的目录  
 docker run -d \
-    -p 6901:6901 \                        // 主机端口:窗口端口
-    -v ~/resources:/electron/resources \  // 主机目录:窗口目录
+    -p 6901:6901 \                        // 主机端口:容器端口
+    -v ~/resources:/electron/resources \  // 主机目录:容器目录
     -v /data:/data \                      // 可选(自定), 上传下载目录
     dkcourser/electron:amd64
 ```
