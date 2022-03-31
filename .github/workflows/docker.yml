@@ -18,6 +18,6 @@ jobs:
         env:
           user: ${{ secrets.DOCKERHUB_USERNAME }}
           passwd: ${{ secrets.DOCKERHUB_TOKEN }}
-          platform: "arm64"
+          platform: "amd64"
         run: |
           chmod +x build-electron.sh && ./build-electron.sh
