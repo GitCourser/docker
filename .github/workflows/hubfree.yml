@@ -1,0 +1,17 @@
+name: Docker Hub Free
+
+on:
+  schedule:
+    - cron: '0 0 1 */2 *'  # 每两月
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.repository == 'GitCourser/docker'
+    steps:
+      - name: keep the activity
+        run: |
+          docker pull -a dkcourser/ubuntu
+          docker pull -a dkcourser/electron
+          docker images
