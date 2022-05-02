@@ -1,0 +1,55 @@
+FROM alpine
+
+COPY config /etc/skel/.config
+
+ENV USER=alpine \
+    DISPLAY=:1 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    HOME=/home/alpine \
+    TERM=xterm \
+    SHELL=/bin/bash \
+    VNC_PASSWD=headless \
+    VNC_PORT=5901 \
+    VNC_RESOLUTION=1024x768 \
+    VNC_COL_DEPTH=24  \
+    NOVNC_PORT=6901 \
+    NOVNC_HOME=/usr/libexec/noVNC 
+
+RUN set -xe \
+  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo python3 py3-numpy chromium tzdata \
+  && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+  && echo "Asia/Shanghai" > /etc/timezone \
+  && apk del tzdata \
+  && ln -s /usr/bin/python3 /usr/bin/python \
+  && echo "CHROMIUM_FLAGS=\"--no-sandbox --no-first-run --disable-gpu\"" >> /etc/chromium/chromium.conf \
+  && addgroup alpine \
+  && adduser -G alpine -s /bin/bash -D alpine \
+  && echo "alpine:alpine" | /usr/sbin/chpasswd \
+  && echo "alpine ALL=NOPASSWD: ALL" >> /etc/sudoers \
+  && mkdir -p $NOVNC_HOME/utils/websockify \
+  && wget -qO- https://github.com/novnc/noVNC/archive/v1.3.0.tar.gz | tar xz --strip 1 -C $NOVNC_HOME \
+  && wget -qO- https://github.com/novnc/websockify/archive/v0.10.0.tar.gz | tar xzf - --strip 1 -C $NOVNC_HOME/utils/websockify \
+  && wget -P /usr/share/fonts/TTF https://github.com/lxgw/LxgwWenKai-Lite/releases/download/v1.234.5/LXGWWenKaiLite-Regular.ttf \
+  && chmod +x -v $NOVNC_HOME/utils/novnc_proxy \
+  && rm -rf /var/cache/apk/* \
+  && echo -e \
+"<!DOCTYPE html>\n" \
+"<html>\n" \
+"    <head>\n" \
+"        <title>noVNC</title>\n" \
+"        <meta charset=\"utf-8\"/>\n" \
+"    </head>\n" \
+"    <body>\n" \
+"        <p><a href=\"vnc_lite.html?password=${VNC_PASSWD}\">noVNC Lite Client</a></p>\n" \
+"        <p><a href=\"vnc.html?password=${VNC_PASSWD}\">noVNC Full Client</a></p>\n" \
+"    </body>\n" \
+"</html>" \
+> "${NO_VNC_HOME}"/index.html
+
+WORKDIR $HOME
+EXPOSE $VNC_PORT $NOVNC_PORT
+
+COPY run_novnc /usr/bin/
+
+CMD ["run_novnc"]
