@@ -47,7 +47,7 @@ RUN set -xe \
 "        <p><a href=\"vnc.html?password=${VNC_PASSWD}\">noVNC Full Client</a></p>\n" \
 "    </body>\n" \
 "</html>" \
-> "${NO_VNC_HOME}"/index.html
+> "${NOVNC_HOME}"/index.html
 
 WORKDIR $HOME
 EXPOSE $VNC_PORT $NOVNC_PORT
