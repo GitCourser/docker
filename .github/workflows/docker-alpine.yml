@@ -1,0 +1,24 @@
+name: Docker Alpine
+
+on:
+  workflow_dispatch:
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.repository == 'GitCourser/docker'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build and Push Docker image
+        env:
+          user: ${{ secrets.DOCKERHUB_USERNAME }}
+          passwd: ${{ secrets.DOCKERHUB_TOKEN }}
+          platform: "amd64"
+        run: |
+          cd alpine-chromium
+          chmod +x build.sh && ./build.sh
