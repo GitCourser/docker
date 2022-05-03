@@ -19,7 +19,7 @@ ENV USER=alpine \
 
 RUN set -xe \
   && echo "@testing http://dl-cdn.alpinelinux.org/alpine/latest-stable/community"  >> /etc/apk/repositories \
-  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo procps tzdata python3 py3-numpy chromium@testing \
+  && apk --update --no-cache add xvfb x11vnc xfce4 xfce4-terminal bash sudo procps tzdata python3 py3-numpy chromium@testing \
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && apk del tzdata \
