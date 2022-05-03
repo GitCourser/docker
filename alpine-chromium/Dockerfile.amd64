@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.8
 
 COPY config /etc/skel/.config
 COPY run_novnc /usr/bin/
@@ -18,7 +18,8 @@ ENV USER=alpine \
     NOVNC_HOME=/usr/libexec/noVNC 
 
 RUN set -xe \
-  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo procps python3 py3-numpy chromium tzdata \
+  && echo "@testing http://dl-cdn.alpinelinux.org/alpine/latest-stable/community"  >> /etc/apk/repositories \
+  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo procps tzdata python3 py3-numpy chromium@testing \
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && apk del tzdata \
