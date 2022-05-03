@@ -1,6 +1,7 @@
 FROM alpine:3.8
 
 COPY config /etc/skel/.config
+COPY run_novnc /usr/bin/
 
 RUN set -xe \
   && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo python3 py3-numpy chromium tzdata \
@@ -14,6 +15,7 @@ RUN set -xe \
   && echo "alpine:alpine" | /usr/sbin/chpasswd \
   && echo "alpine ALL=NOPASSWD: ALL" >> /etc/sudoers \
   && wget -P /usr/share/fonts/TTF https://github.com/lxgw/LxgwWenKai-Lite/releases/download/v1.234.5/LXGWWenKaiLite-Regular.ttf \
+  && chmod +x /usr/bin/run_novnc \
   && rm -rf /var/cache/apk/*
 
 USER alpine
@@ -53,7 +55,5 @@ RUN set -xe \
 
 WORKDIR $HOME
 EXPOSE $VNC_PORT $NOVNC_PORT
-
-COPY run_novnc /usr/bin/
 
 CMD ["run_novnc"]
