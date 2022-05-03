@@ -34,7 +34,6 @@ RUN set -xe \
   && wget -P /usr/share/fonts/TTF https://github.com/lxgw/LxgwWenKai-Lite/releases/download/v1.234.5/LXGWWenKaiLite-Regular.ttf \
   && chmod +x -v $NOVNC_HOME/utils/novnc_proxy \
   && chmod +x /usr/bin/run_novnc \
-  && chown -R alpine $NOVNC_HOME \
   && rm -rf /var/cache/apk/* \
   && echo -e \
 "<!DOCTYPE html>\n" \
