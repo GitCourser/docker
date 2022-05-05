@@ -1,7 +1,6 @@
 FROM alpine:3.8
 
 # COPY config /etc/skel/.config
-COPY run_novnc /usr/bin/
 
 ENV USER=alpine \
     DISPLAY=:1 \
@@ -16,6 +15,9 @@ ENV USER=alpine \
     VNC_COL_DEPTH=24  \
     NOVNC_PORT=6901 \
     NOVNC_HOME=/usr/libexec/noVNC 
+
+COPY run_novnc /usr/bin/
+copy config $HOME/.config/
 
 RUN set -xe \
   && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo procps python3 py3-numpy chromium tzdata \
