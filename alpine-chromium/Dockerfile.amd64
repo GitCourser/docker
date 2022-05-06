@@ -18,7 +18,7 @@ COPY run_novnc /usr/bin/
 COPY config $HOME/.config/
 
 RUN set -xe \
-  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo procps python3 py3-numpy chromium tzdata \
+  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo procps python3 py3-numpy chromium tzdata paper-icon-theme \
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && apk del tzdata \
