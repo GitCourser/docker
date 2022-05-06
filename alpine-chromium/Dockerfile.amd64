@@ -15,9 +15,10 @@ ENV USER=alpine \
     NOVNC_HOME=/usr/libexec/noVNC 
 
 COPY run_novnc /usr/bin/
+COPY config $HOME/.config/
 
 RUN set -xe \
-  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal bash sudo procps python3 py3-numpy chromium tzdata tango-icon-theme \
+  && apk add --no-cache xvfb x11vnc xfce4 xfce4-terminal tango-icon-theme bash sudo procps python3 py3-numpy chromium tzdata \
   && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
   && echo "Asia/Shanghai" > /etc/timezone \
   && apk del tzdata \
@@ -33,6 +34,7 @@ RUN set -xe \
   && wget -P /usr/share/fonts/TTF https://github.com/lxgw/LxgwWenKai-Lite/releases/download/v1.234.5/LXGWWenKaiLite-Regular.ttf \
   && chmod +x -v $NOVNC_HOME/utils/novnc_proxy \
   && chmod +x /usr/bin/run_novnc \
+  && chown -R alpine $HOME/.config/ \
   && rm -rf /tmp/* /var/cache/apk/* \
   && echo -e \
 "<!DOCTYPE html>\n" \
@@ -49,7 +51,6 @@ RUN set -xe \
 > "${NOVNC_HOME}"/index.html
 
 USER alpine
-COPY config $HOME/.config/
 
 WORKDIR $HOME
 EXPOSE $VNC_PORT $NOVNC_PORT
