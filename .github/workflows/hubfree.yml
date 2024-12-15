@@ -14,6 +14,7 @@ jobs:
         env:
           user: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
+          docker pull -a "$user"/nginx
           docker pull -a "$user"/ubuntu
           docker pull -a "$user"/electron
           docker pull -a "$user"/edge
