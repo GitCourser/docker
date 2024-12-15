@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# 启动cron
+crond
+
+# 后台启动nginx
+nginx -g "daemon off;"
