@@ -28,6 +28,6 @@ jobs:
       - name: Build and Push
         run: |
           cd nginx
-          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/medialinker:latest -f Dockerfile . --push
+          docker buildx build --platform linux/amd64,linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/nginx:latest -f Dockerfile . --push
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
