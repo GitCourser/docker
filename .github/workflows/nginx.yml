@@ -1,4 +1,4 @@
-name: Build Nginx Image
+name: Build NGINX Image
 on:
   workflow_dispatch:
 #  push:
