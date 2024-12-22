@@ -37,7 +37,7 @@ jobs:
 
       - name: Build and Push
         run: |
-          cd nginx
+          cd autofilm
           sh prepare.sh
           docker buildx build --platform linux/amd64,linux/arm64 \
             -t ${{ secrets.DOCKERHUB_USERNAME }}/autofilm:${{ env.VER2 }} \
