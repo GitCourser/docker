@@ -1,4 +1,4 @@
-name: Build NGINX Image
+name: Build AutoFilm Image
 on:
   workflow_dispatch:
 #  push:
