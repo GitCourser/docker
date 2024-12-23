@@ -2,7 +2,7 @@ name: Build AutoFilm Image
 on:
   workflow_dispatch:
   schedule:
-    - cron: @weekly
+    - cron: '0 0 * * 0'
 
 jobs:
   Docker-build:
