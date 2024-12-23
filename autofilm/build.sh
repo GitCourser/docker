@@ -6,9 +6,9 @@ latest=$(echo "$latest" | tr -d '\r\n')
 echo $latest
 app_ver=$(echo $latest | jq -r '.tag_name')
 echo $app_ver
-tag_ver=${version#v}
+tag_ver=${app_ver#v}
 echo $tag_ver
-echo "${version#v}"
+echo "${app_ver#v}"
 
 echo "$user"
 image_name="$user/autofilm"
