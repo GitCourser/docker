@@ -5,6 +5,7 @@ latest=$(curl -s https://api.github.com/repos/$repo/releases/latest)
 app_ver=$(echo $latest | jq -r '.tag_name')
 tag_ver=${version#v}
 
+echo "$user"
 image_name="$user/autofilm"
 echo $image_name
 tags=$(curl -s "https://hub.docker.com/v2/repositories/$image_name/tags/" | jq -r '.results[].name')
