@@ -2,10 +2,11 @@
 
 repo="Akimio521/AutoFilm"
 latest=$(curl -s https://api.github.com/repos/$repo/releases/latest)
+latest=$(echo "$latest" | tr -d '\r\n')
 echo $latest
 app_ver=$(echo $latest | jq -r '.tag_name')
 echo $app_ver
-tag_ver="${version#v}"
+tag_ver=${version#v}
 echo $tag_ver
 echo "${version#v}"
 
