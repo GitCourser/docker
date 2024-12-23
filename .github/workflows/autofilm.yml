@@ -25,21 +25,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Get Version
-        id: get_version
-        run: |
-          repo="Akimio521/AutoFilm"
-          latest=$(curl -s https://api.github.com/repos/$repo/releases/latest)
-          version=$(echo $latest | jq -r '.tag_name')
-          echo "REPO=$repo" >> $GITHUB_ENV
-          echo "VER1=$version" >> $GITHUB_ENV
-          echo "VER2=${version#v}" >> $GITHUB_ENV
-
       - name: Build and Push
+        env:
+          user: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
-          cd autofilm
-          sh prepare.sh
-          docker buildx build --platform linux/amd64,linux/arm64 \
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/autofilm:${{ env.VER2 }} \
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/autofilm:latest \
-            -f Dockerfile . --push
+          cd autofilm && sh build.sh
