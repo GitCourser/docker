@@ -2,7 +2,7 @@ name: Docker Hub Free
 
 on:
   schedule:
-    - cron: '0 0 1 */2 *'  # 每两月
+    - cron: '3 2 1 */3 *'
   workflow_dispatch:
 
 jobs:
@@ -14,10 +14,9 @@ jobs:
         env:
           user: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
-          docker pull "$user"/autofilm
-          docker pull -a "$user"/nginx
-          docker pull -a "$user"/ubuntu
-          docker pull -a "$user"/electron
-          docker pull -a "$user"/edge
-          docker pull -a "$user"/alpine-chromium
+          REPOSITORIES=$(curl -s "https://hub.docker.com/v2/repositories/$user/" | jq -r '.results[] | .name')
+          echo "$REPOSITORIES" | while read repo_name; do
+            echo "Pulling $repo_name"
+            docker pull -a $user/$repo_name
+          done
           docker images
