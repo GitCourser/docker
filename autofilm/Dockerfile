@@ -5,7 +5,9 @@ ENV TZ=Asia/Shanghai
 COPY app /app
 COPY requirements.txt requirements.txt
 
-RUN pip install --upgrade pip &&\
+RUN apk update &&\
+    apk upgrade &&\
+    rm -rf /tmp /var/lib/apt/lists /var/tmp &&\
     pip install --no-cache-dir -r requirements.txt &&\
     rm requirements.txt
 
