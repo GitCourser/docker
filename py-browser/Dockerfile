@@ -15,6 +15,6 @@ RUN apt-get update && apt-get install -y \
     groupadd browser || true && \
     chgrp -R browser /shared && \
     chmod -R 775 /shared && \
-    ln -sf /shared/camoufox /root/.cache/camoufox && \
+    ln -sf /shared/camoufox /root/.cache && \
     pip install --no-cache-dir camoufox playwright && \
     camoufox fetch
