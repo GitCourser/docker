@@ -5,6 +5,8 @@ docker run -d \
   -v $PWD/data:/var/lib/cloudflare-warp \
   --restart unless-stopped \
   --name warp \
+  --hostname warp \
+  --network mynet \
   warp
 
 docker inspect warp | grep IPAddress
